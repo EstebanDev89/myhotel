@@ -7,12 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CrudComponent } from './pages/crud/crud.component';
 import { MaterialModule } from './material.module';
 import { DatePipe } from '@angular/common';
+import { ListComponent } from './pages/list/list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CrudComponent
+    CrudComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
