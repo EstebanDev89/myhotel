@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CrudComponent } from './pages/crud/crud.component';
 import { MaterialModule } from './material.module';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +21,7 @@ import { MaterialModule } from './material.module';
     BrowserAnimationsModule,
     MaterialModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
