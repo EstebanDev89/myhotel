@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Foo } from 'src/app/models/Foo.model';
+import { DatePipe } from '@angular/common';
+
 
 @Injectable({
   providedIn: 'root',
@@ -54,8 +56,26 @@ export class FooCrudService {
       created: '8-21-22, 2:55 PM',
     },
   ];
+  private idCounter = 4;
 
-  constructor() {}
+  constructor(private datePipe: DatePipe) {}
+
+  private validate(foo: Foo) {
+    if (!foo.name || foo.name.trim() === '') return false;
+    if (!foo.colors) return false;
+    return true;
+  }
+
+  private updateList(changes: Foo) {
+    this.list = this.list.map((element) => {
+      const id = element.id;
+      const created = element.created;
+      if (element.id === changes.id) {
+        return { ...element, ...changes, id, created };
+      }
+      return element;
+    });
+  }
 
   getColors(): Observable<string[]> {
     return of(this.colors);
@@ -65,14 +85,23 @@ export class FooCrudService {
     return of(this.list);
   }
 
+  add(newest: Foo): Observable<boolean> {
+    const created = <string>this.datePipe.transform(new Date(), 'M-d-yy, h:mm a');
+    if (this.validate(newest)) {
+      const id = ++this.idCounter;
+      this.list.push({ ...newest, id , created});
+      return of(true);
+    }
+    return of(false);
+  }
+
   update(changes: Foo): Observable<boolean> {
-    const id = changes.id;
-    const index = this.list.findIndex((ele) => ele.id === id);
-    if (index === -1) return of(false);
-    this.list = this.list.map((element) =>
-      element.id === changes.id ? { ...element, ...changes, id } : element
-    );
-    return of(true);
+    const index = this.list.findIndex((ele) => ele.id === changes.id);
+    if (index !== -1 && this.validate(changes)) {
+      this.updateList(changes);
+      return of(true);
+    }
+    return of(false);
   }
 
   delete(id: number): Observable<boolean> {

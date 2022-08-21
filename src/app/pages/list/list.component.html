@@ -1,5 +1,5 @@
 <!-- <section *ngIf="{dataSource: foos$ | async} as model"> -->
-<section>
+<section class="main">
   <table mat-table [dataSource]="foos$" class="mat-elevation-z8">
 
     <ng-container matColumnDef="id">
@@ -34,8 +34,13 @@
       </td>
     </ng-container>
 
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <a class="add" routerLink="/foo/add" mat-mini-fab color="accent" aria-label="Add new item">
+    <mat-icon>add</mat-icon>
+  </a>
 
 </section>
