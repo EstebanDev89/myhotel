@@ -1,0 +1,10 @@
+<section>
+  <form [formGroup]="crudForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Favorite input</mat-label>
+      <input matInput placeholder="An Input" formControlName="firstInput">
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit" [disabled]="!crudForm.valid">Save</button>
+    <button mat-flat-button disabled>Disabled</button>
+  </form>
+</section>
