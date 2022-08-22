@@ -1,16 +1,30 @@
-<section>
+<section *ngIf="{
+  colors: colors$ | async,
+  isAddMode: !!(isAdd$ | async),
+  isEditMode: !!(isEdit$ | async),
+  isDeleteMode: !!(isDelete$ | async),
+  id: id$ | async,
+  editableFoo: editableFoo$ | async,
+  deleteFoo: deleteFoo$ | async
+} as model">
   <form [formGroup]="crudForm" (ngSubmit)="onSubmit()">
+
+    <h1 *ngIf="!model.isAddMode">Id: {{crudForm.value.id}}</h1>
+    <h2 *ngIf="!model.isAddMode">Created: {{crudForm.value.created}}</h2>
+
+    <input type="hidden" formControlName="id">
+    <input type="hidden" formControlName="created">
 
     <mat-form-field>
       <mat-label>Say my name</mat-label>
-      <input matInput  autocomplete="off" type="text" placeholder="Name" formControlName="name">
-      <mat-hint>Ej: Heisenberg</mat-hint>
+      <input matInput autocomplete="off" type="text" placeholder="Name" formControlName="name">
+      <mat-hint *ngIf="!model.isDeleteMode">Ej: Heisenberg</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Colors</mat-label>
-      <mat-select  formControlName="colors">
-        <mat-option *ngFor="let color of colors" [value]="color">
+      <mat-select formControlName="colors">
+        <mat-option *ngFor="let color of model.colors" [value]="color">
           <div class="color">
             <div class="square" [style.backgroundColor]="color"></div>
             <div class="name">{{color}}</div>
@@ -25,7 +39,9 @@
       <mat-radio-button value="red">Water</mat-radio-button>
     </mat-radio-group>
 
-    <button mat-flat-button color="primary" type="submit" [disabled]="!crudForm.valid">Save</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="!crudForm.valid && !model.isDeleteMode">
+      {{model.isDeleteMode && 'Delete' || model.isEditMode && 'Update' || model.isAddMode && 'Create'}}
+    </button>
 
     <!-- {{crudForm.value | json}} -->
   </form>

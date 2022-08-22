@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 import { Foo } from 'src/app/models/Foo.model';
 import { DatePipe } from '@angular/common';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -86,10 +85,12 @@ export class FooCrudService {
   }
 
   add(newest: Foo): Observable<boolean> {
-    const created = <string>this.datePipe.transform(new Date(), 'M-d-yy, h:mm a');
+    const created = <string>(
+      this.datePipe.transform(new Date(), 'M-d-yy, h:mm a')
+    );
     if (this.validate(newest)) {
       const id = ++this.idCounter;
-      this.list.push({ ...newest, id , created});
+      this.list.push({ ...newest, id, created });
       return of(true);
     }
     return of(false);
@@ -112,11 +113,7 @@ export class FooCrudService {
   }
 
   findById(id: number): Observable<Foo | undefined> {
-    return of(
-      this.list.find((element: Foo) => {
-        element.id === id;
-      })
-    );
+    return of(this.list.find((element: Foo) => element.id === id));
   }
 
   findByQuery(query: string): Observable<Foo[]> {
