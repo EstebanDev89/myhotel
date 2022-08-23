@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FooCrudService } from 'src/app/services/foo-crud/foo-crud.service';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { filter, map, share, switchMap, tap } from 'rxjs/operators';
-import { combineLatest, race, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { filter, map, switchMap, tap, takeUntil } from 'rxjs/operators';
+import { combineLatest, race, Subject } from 'rxjs';
 import { Foo } from 'src/app/models/Foo.model';
 
 @Component({
@@ -11,8 +11,8 @@ import { Foo } from 'src/app/models/Foo.model';
   templateUrl: './crud.component.html',
   styleUrls: ['./crud.component.scss'],
 })
-export class CrudComponent implements OnInit {
-  private subcriptions = new Subscription();
+export class CrudComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
   colors$ = this.fooCrudService.getColors();
   id$ = this.activedRoute.params.pipe(map(({ id }) => +id));
@@ -21,6 +21,7 @@ export class CrudComponent implements OnInit {
   );
   isEdit$ = combineLatest([this.id$, this.isDelete$]).pipe(
     map(([id, isDelete]) => !!id && !isDelete)
+
   );
   isAdd$ = this.activedRoute.url.pipe(
     map((segments) => !!segments.find((s) => s.path === 'add'))
@@ -30,7 +31,7 @@ export class CrudComponent implements OnInit {
     filter(([id, isEdit]) => isEdit),
     map(([id, isEdit]) => id),
     switchMap((id) => this.fooCrudService.findById(id)),
-    filter((foo) => !!foo),
+    tap((foo) => !foo && this.router.navigateByUrl('/foo')),
     tap((foo) => {
       this.crudForm = new FormGroup({
         id: new FormControl(foo?.id),
@@ -46,7 +47,7 @@ export class CrudComponent implements OnInit {
     filter(([id, isDelete]) => isDelete),
     map(([id, isDelete]) => id),
     switchMap((id) => this.fooCrudService.findById(id)),
-    filter((foo) => !!foo),
+    tap((foo) => !foo && this.router.navigateByUrl('/foo')),
     tap((foo) => {
       this.crudForm = new FormGroup({
         id: new FormControl(foo?.id),
@@ -62,7 +63,7 @@ export class CrudComponent implements OnInit {
     id: new FormControl(0),
     created: new FormControl(''),
     name: new FormControl('', Validators.required),
-    colors: new FormControl('', Validators.required),
+    colors: new FormControl([], Validators.required),
     color: new FormControl('', Validators.required),
   });
 
@@ -92,16 +93,17 @@ export class CrudComponent implements OnInit {
       switchMap(() => this.fooCrudService.delete(this.crudForm.value.id))
     );
 
-    const subcription = race(added$, edited$, deleted$)
+    race(added$, edited$, deleted$)
       .pipe(
+        takeUntil(this.unsubscribe$),
         tap((operatioOk) => operatioOk && this.router.navigateByUrl('/foo'))
       )
       .subscribe();
-
-    this.subcriptions.add(subcription);
   }
 
   ngOnDestroy() {
-    this.subcriptions.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
+
 }

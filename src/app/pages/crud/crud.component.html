@@ -23,7 +23,7 @@
 
     <mat-form-field>
       <mat-label>Colors</mat-label>
-      <mat-select formControlName="colors">
+      <mat-select multiple formControlName="colors">
         <mat-option *ngFor="let color of model.colors" [value]="color">
           <div class="color">
             <div class="square" [style.backgroundColor]="color"></div>
@@ -32,6 +32,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <div class="colors-collection">
+      <div *ngFor="let color of crudForm.value.colors" class="color" [style.backgroundColor]="color">
+      </div>
+    </div>
 
     <mat-radio-group aria-label="Select an option" formControlName="color">
       <mat-radio-button value="green">Beer</mat-radio-button>
@@ -42,7 +47,5 @@
     <button mat-flat-button color="primary" type="submit" [disabled]="!crudForm.valid && !model.isDeleteMode">
       {{model.isDeleteMode && 'Delete' || model.isEditMode && 'Update' || model.isAddMode && 'Create'}}
     </button>
-
-    <!-- {{crudForm.value | json}} -->
   </form>
 </section>
