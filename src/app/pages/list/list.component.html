@@ -1,4 +1,3 @@
-<!-- <section *ngIf="{dataSource: foos$ | async} as model"> -->
 <section class="main">
   <table mat-table [dataSource]="foos$" class="mat-elevation-z8">
 
@@ -39,7 +38,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <a class="add" routerLink="/foo/add" mat-mini-fab color="accent" aria-label="Add new item">
+  <a appAddClassAttribute routerLink="/foo/add" mat-mini-fab color="accent" aria-label="Add new item">
     <mat-icon>add</mat-icon>
   </a>
 

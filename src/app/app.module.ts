@@ -8,13 +8,15 @@ import { CrudComponent } from './pages/crud/crud.component';
 import { MaterialModule } from './material.module';
 import { DatePipe } from '@angular/common';
 import { ListComponent } from './pages/list/list.component';
+import { AddClassAttributeDirective } from './share/add-class-attribute.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CrudComponent,
-    ListComponent
+    ListComponent,
+    AddClassAttributeDirective
   ],
   imports: [
     BrowserModule,
