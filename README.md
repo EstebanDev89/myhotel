@@ -1,27 +1,30 @@
-# Myhotel
+# MyHotel
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
+This is a job evaluation project for MyHotel company.
 
-## Development server
+## Description
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4207/`. The application will automatically reload if you change any of the source files.
+Longer description explaining the rationale/intent behind the project, what it's good for, and how it works. If the next two subsections are short enough, they can be merged up into this block—perhaps as bulleted lists.
 
-## Code scaffolding
+### Features & TODO List
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [x] Angular 13+ 🅰.
+- [x] Se deben utilizar reactive forms ⚛.
+- [x] No hay que ocupar base de datos ni backend (se puede, pero escapa del scope de este ejercicio), pero de no ocupar, esto no tiene que ser evidente desde el punto de vista del componente que utilice el servicio (hint 🕵️‍♀️: rxjs/of)
+- [ ] Utilizar alguna directiva y/o pipe personalizado. Entiendo que puede no ser necesario para la envergadura del proyecto, pero el objetivo es demostrar conocimientos.
+- [x] Todo tiene que estar en inglés (variables, comentarios)
+- [x] Agregar un README.md básico para correr la aplicación. Da lo mismo el idioma en el que esté este README (inglés o español eso sí). De haber cosas que necesiten explicación, comentar, etc., también utilizar este archivo (por qué se hizo algo de la manera x? Aspectos interesantes que no son tan evidentes).
+- [ ] Suma puntos si se implementa NGXS, aunque sea algo básico 🙄.
+- [x] La prueba se debe entregar en un repositorio público.
 
-## Build
+### Built with
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Angular
+- & Love
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Getting started
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Clone this repo. And run "npm i". 
+After run "ng serve -o" to openit.
+Finally Add, Modify or Delete a caracter from the tv show Breaking Bad or Better Call Saul;
